@@ -4,7 +4,6 @@ import spotipy
 import spotipy.util as util
 import time
 from json.decoder import JSONDecodeError
-from secondary import songs
 from secondary import playlists
 from secrets import secrets
 
@@ -41,7 +40,8 @@ def follow(thefile):
 
 def play(song_name, spotify_object, deviceID):
     try:
-        spotify_object.add_to_queue(songs[song_name], deviceID)
+        result = spotify_object.search(q=song_name, type='track', limit=1)['tracks']['items'][0]['uri']
+        spotify_object.add_to_queue(result, deviceID)
         spotify_object.next_track(deviceID)
     except KeyError:
         pass
